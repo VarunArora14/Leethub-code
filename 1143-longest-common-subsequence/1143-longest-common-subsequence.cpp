@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int longestCommonSubsequence(string text1, string text2) {
+        
+        int n=text1.length(), m=text2.length();
+        vector<vector<int>> dp(n+1, vector<int>(m+1));
+        
+        for(int i=0;i<=n;i++)
+        {
+            for(int j=0;j<=m;j++)
+            {
+                if(i==0 || j==0)
+                    dp[i][j]=0; // base case to access i-1 and j-1
+                
+                else if(text1[i-1] == text2[j-1])
+                    dp[i][j] = 1+dp[i-1][j-1];
+                
+                else dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+            }
+        }
+        
+        // for(auto v: dp)
+        // {
+        //     for(int x: v)
+        //         cout<<x<<" ";
+        //     cout<<"\n";
+        // }
+        
+        return dp[n][m];
+    }
+};
+
+// classic DP problem
+
+/*
+    a b c d e
+    0 0 0 0 0
+  a 0
+  c 0
+  e 0
+*/
