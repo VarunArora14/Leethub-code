@@ -1,29 +1,25 @@
 class Solution {
 public:
-    vector<int> cycleLengthQueries(int n, vector<vector<int>>& queries) {
-        
-        int m=queries.size();
-        vector<int> res(m,1); // for the new added edges
-        
-        
-        for(int i=0;i<m;i++)
-        {
-            int f = queries[i][0];
-            int s = queries[i][1];
-            
-            // find LCA of both and add each edge to res[i] as query result
-            while(f!=s)
-            {
-                if(f>s) f=f/2;
-                else s=s/2;
-                
-                res[i]++;
+    int lca(int a, int b) {
+        int numa = 0; int numb = 0;
+        while(a != b) {
+            if(a < b) {
+                b /= 2;
+                numb++;
+            } else if(a > b) {
+                a /= 2;
+                numa++;
             }
         }
-        
-        return res;
+        return numa + numb + 1;
+    }
+    vector<int> cycleLengthQueries(int n, vector<vector<int>>& queries) {
+        vector<int> ans;
+        for(auto& q: queries) {
+            int a = q[0];
+            int b = q[1];
+            ans.push_back(lca(a, b));
+        }
+        return ans;
     }
 };
-
-// when 2 edges are connected, the length of cycle is found by going to parent of both nodes and doing count++ and adding +1 for the
-// added edge
