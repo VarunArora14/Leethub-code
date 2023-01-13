@@ -23,7 +23,8 @@ class Solution {
         int mxnum = 0;
         int curmx = 0 ;
         
-        if(pq.size() > 0)
+        // cout<<pq.size()<<"\n";
+        while(pq.size() > 0)
         {
             int f = -pq.top() ;
             pq.pop() ;
@@ -32,16 +33,9 @@ class Solution {
             mxnum = max(mxnum , f) ; // store longest length node to return 
         }
             
-          if(pq.size() > 0)
-        {
-            int f = -pq.top() ;
-            pq.pop() ;
-            curmx+= f ;
-              
-             mxnum = max(mxnum , f) ;
-        }
         
         curmx++ ; // add current node to ans with branches
+        // cout<<"currmax: "<<curmx<<"\n";
         ans = max(ans,  curmx) ;
         
         return {s[par] , mxnum + 1 } ; // return the child character to check for adjacent 
