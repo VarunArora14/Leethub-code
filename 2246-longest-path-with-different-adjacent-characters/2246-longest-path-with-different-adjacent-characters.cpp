@@ -24,7 +24,7 @@ class Solution {
         int curmx = 0 ;
         
         // cout<<pq.size()<<"\n";
-        while(pq.size() > 0)
+        while(pq.size() > 0) // pq can have 1 or 2 elements so add accordingly 
         {
             int f = -pq.top() ;
             pq.pop() ;
