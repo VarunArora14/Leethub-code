@@ -1,34 +1,37 @@
 class Solution {
 public:
-    void helper(vector<int> curr, int idx, vector<int>& nums, set<vector<int>>& uniqueSubs)
-    {
-        if(curr.size()>=2) uniqueSubs.insert(curr);
-        if(idx==nums.size()) return;
-        
-        for(int i=idx;i<nums.size();i++)
-        {
-                // helper(curr, idx+1, nums);
-            if(curr.empty() || curr.back()<=nums[i])
-            {
-                curr.push_back(nums[i]);
-                helper(curr, i+1, nums, uniqueSubs);
-                curr.pop_back();
-            }               
-            
-        }
-        
-        
-    }
     vector<vector<int>> findSubsequences(vector<int>& nums) {
         
-        set<vector<int>> uniqueSubs;
-        helper({}, 0, nums, uniqueSubs);
+        int n=nums.size();
+        set<vector<int>> res;
         
-        
-        vector<vector<int>> ans;
-        for(auto u: uniqueSubs)
-            ans.push_back(u);
-        
-        return ans;
+        // bitmask traverse, i from 1 to ignore empty set
+        for(int i=1; i < (1<<n); i++)
+        {
+            vector<int> seq;
+            // j for checking the jth bit true or not
+            for(int j=0;j<n;j++)
+            {
+                // check if jth bit is true in bitmask "i"
+            if (((i >> j) & 1) == 1)
+            {
+                seq.push_back(nums[j]);
+            }
+            }
+            
+            // for the subset check if valid or not
+            if (seq.size() >= 2) {
+                // check whether the sequence is increasing
+                bool isIncreasing = true;
+                for (int i = 0; i < seq.size() - 1; i++) {
+                    isIncreasing &= seq[i] <= seq[i + 1];
+                }
+                if (isIncreasing) {
+                    res.insert(seq);
+                }
+            }
+        }
+        return vector(res.begin(), res.end());
     }
 };
+// we have to generate all subsets using bitmasking and then check the vector if increasing
