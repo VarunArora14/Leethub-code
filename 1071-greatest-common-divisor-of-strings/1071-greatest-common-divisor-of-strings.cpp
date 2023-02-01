@@ -1,13 +1,16 @@
 class Solution {
 public:
+    bool div(string s, string t) {
+        string curr = t;
+        while (curr.size() < s.size()) curr += t;
+        return curr == s;
+    }
     string gcdOfStrings(string str1, string str2) {
-        
-        if(str1+str2!=str2+str1) return "";
-        
-        // otherwise gcd string will be 
-        return str1.substr(0, gcd(str1.length(), str2.length()));
+        string curr = str2;
+        while (curr.size()) {
+            if (div(str1, curr) && div(str2, curr)) return curr;
+            curr.pop_back();
+        }
+        return "";
     }
 };
-
-// two strings have gcd if str1+str2 == str2+str1, otherwise it wont occur as s = t + .... + t
-// and we need common divisor
