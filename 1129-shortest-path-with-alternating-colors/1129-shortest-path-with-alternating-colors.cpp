@@ -21,45 +21,64 @@ using vpii = vector<pair<int, int>>;
 class Solution {
 public:
     vector<int> shortestAlternatingPaths(int n, vector<vector<int>>& red, vector<vector<int>>& blue) {
-        // create a adjacency list with color as well along with node connected to u-> {v, color}
-  vector<vpii> graph(n); // n vectors of vector<pair<int,int>>
+vector<vector<int>> adj[n];
 
-  for (auto r : red)
-  {
-    int u = r[0];
-    int v = r[1];
-    graph[u].pb({v, 1});
-  }
+for (int i = 0; i < red.size(); i++)
+{
 
-  for (auto b : blue)
-  {
-    int u = b[0];
-    int v = b[1];
-    graph[u].pb({v, -1});
-  }
+    int u = red[i][0];
+    int v = red[i][1];
 
-  // now we need to store the shortest distances using bfs
-  vi dist(n, -1), vis(n, 0);
-  queue<tuple<int, int, int>> q; // {node, distance, color}
-  q.push({0, 0, 0});             // initial color is 0
+    adj[u].push_back({v, 0});
+}
+for (int i = 0; i < blue.size(); i++)
+{
 
-  while (!q.empty())
-  {
-    auto [node, distance, color] = q.front();
-    q.pop();
+    int u = blue[i][0];
+    int v = blue[i][1];
 
-    dist[node] = dist[node] == -1 ? distance : dist[node]; // if old distance is -1, we assign distance value passed otherwise we have shortest distance
+    adj[u].push_back({v, 1});
+}
 
-    for (auto &[nbr_node, nbr_color] : graph[node])
+vector<int> distance(n, -1);
+distance[0] = 0;
+
+queue<vector<int>> pq;
+vector<vector<int>> visited(n, vector<int>(2, 0));
+
+pq.push({0, 0, -1});
+
+visited[0][0] = 1;
+visited[0][1] = 1;
+
+while (!pq.empty())
+{
+    int node = pq.front()[1];
+    int nodeWeight = pq.front()[0];
+    int nodecolor = pq.front()[2];
+
+    pq.pop();
+
+    for (auto itr : adj[node])
     {
-      // if same color as nbr or if nbr_node already visited, ignore
-      if (nbr_color == color || nbr_node==-1)
-        continue;
+        int adjNode = itr[0];
 
-      q.push({nbr_node, distance + 1, nbr_color}); // new element as nbr with +1 distance and other color
-      nbr_node=-1;
+        int color = itr[1];
+
+        if (visited[adjNode][color] == 0 and color != nodecolor)
+        {
+            if (distance[adjNode] == -1)
+                distance[adjNode] = nodeWeight + 1;
+            pq.push({nodeWeight + 1, adjNode, color});
+
+            visited[adjNode][color] = 1;
+        }
     }
-  }
-  return dist;
+}
+
+return distance;
     }
 };
+
+// we have to use 2d visited as we have 2 colors and we can come back to same node if different color path
+// exists like red = [[0,1]] and blue = [[0,1]]
