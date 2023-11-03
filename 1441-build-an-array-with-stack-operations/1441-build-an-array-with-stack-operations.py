@@ -13,7 +13,7 @@ class Solution:
                 c+=1
                 res.append("Push")
             else:
-                while i<len(target) and target[i] > st[c]:
+                while target[i] > st[c]:
                     res.append("Push")
                     res.append("Pop")
                     c+=1
