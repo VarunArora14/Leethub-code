@@ -1,19 +1,17 @@
 class Solution:
     def eliminateMaximum(self, dist: List[int], speed: List[int]) -> int:
-        arrival = []
+        #1) Make a ratio of Speed/Dist to tell you which to shoot first
+        #2) Shoot highest ratio monster
+        #3) Add the new speeds to the distance
+        #4) If any distances are <=0 then you lose --> berak
+        #else repeat steps 2-4 until break
+        monsters_shot = 0
+        ratio = [y/x for x, y in zip(speed, dist)]
+        ratio.sort()
+
         for i in range(len(dist)):
-            arrival.append(dist[i]/speed[i])
-            
-        arrival.sort()
-        ans=0
-        
-        for i in range(len(arrival)):
-            
-            # monster arrives before recharge
-            # at i=0, monster must be >0
-            # then recharge and so at i=1, monster should take at least time=2(dist[i]/speed[i])
-            if arrival[i] <=i :
+            if ratio[i] > i:
+                monsters_shot +=1
+            else:
                 break
-                
-            ans+=1
-        return ans
+        return monsters_shot
