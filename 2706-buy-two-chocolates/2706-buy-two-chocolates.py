@@ -1,8 +1,14 @@
 class Solution:
     def buyChoco(self, prices: List[int], money: int) -> int:
-        prices.sort()
-        if prices[0] + prices[1] > money:
+        firstSmallest, secondSmallest = 101,101
+        for i in prices :
+            if i<firstSmallest:
+                secondSmallest=firstSmallest
+                firstSmallest=i
+        
+            elif i<secondSmallest :
+                secondSmallest=i 
+        if (firstSmallest+secondSmallest)>money :
             return money
-        else:
-            return money - (prices[0] + prices[1])
+        return money-(firstSmallest+secondSmallest)
         
