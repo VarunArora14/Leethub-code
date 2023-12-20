@@ -5,7 +5,7 @@ class Solution:
             if i<firstSmallest:
                 secondSmallest=firstSmallest
                 firstSmallest=i
-        
+            # important case to handle
             elif i<secondSmallest :
                 secondSmallest=i 
         if (firstSmallest+secondSmallest)>money :
