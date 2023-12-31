@@ -1,19 +1,10 @@
 class Solution:
     def maxLengthBetweenEqualCharacters(self, s: str) -> int:
-        mapper = {}
-        
-        n = len(s)
-        
-        res=-1
-        for i in range(n):
-            if s[i] not in mapper:
-                mapper[s[i]] = [i]
-            else:
-                mapper[s[i]].append(i) # store the indices
-        
-        for val in mapper.values():
-            # print(val)
-            if len(val)>1:
-                res = max(res, val[-1]-val[0]-1) # last - first idx - 1(for len, consider "aa")
-        
+        hmap = defaultdict(int)
+        res = -1
+        for i, a in enumerate(s):
+          if a not in hmap:
+            hmap[a] = i # store the first occurence
+          else:
+            res = max(res, i-hmap[a]-1) # find the len if it occurs again
         return res
