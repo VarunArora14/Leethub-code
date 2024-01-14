@@ -1,42 +1,17 @@
-# if len is diff and no unique chars exist in any of those
 class Solution:
-    def closeStrings(self, word1: str, word2: str) -> bool:
-        if len(word1)!=len(word2):
-            return False
-        
-        first_set = set()
-        second_set = set()
-        
-        
-        for char in word1:
-            first_set.add(char)
-        
-        for char in word2:
-            second_set.add(char)
-        
-        for char in word1:
-            if char not in second_set:
-                return False
-        
-        for char in word2:
-            if char not in first_set:
-                return False
-        
-        # consider case aaza and zzaa, they cannot be correct as occurences differ of z and a and cannot be swapped 
-        # store the frequencies and then see if we have no different frequencies which we cannot swap as above
-        # example of [3,1] and [2,2]
-        
-        f1 = [0 for _ in range(26)]
-        f2 = [0 for _ in range(26)]
-        
-        for i in range(len(word1)):
-            char = word1[i]
-            f1[ord(char)-97]+=1
-            char = word2[i]
-            f2[ord(char)-97]+=1
-        
-        if sorted(f1)!=sorted(f2):
-            return False
-        
-        
-        return True
+    def closeStrings(self, word1: str, word2: str) -> bool:         #     Example: word1 = "cabbba" 
+                                                                    #              word2 = "abbccc"
+
+        c1 = Counter(word1)                                         #          c1 = {'a':2, 'b':3, 'c':1}
+        c2 = Counter(word2)                                         #          c1 = {'a':2, 'b':3, 'c':1}
+
+        count1 = sorted(c1.values())                                #      count1 = [1, 2, 3]
+        count2 = sorted(c2.values())                                #      count2 = [1, 2, 3]
+
+        set1 = set(word1)                                           #        set1 = {'c', 'b', 'a'}
+        set2 = set(word2)                                           #        set2 = {'a', 'c', 'b'}
+
+        if count1 == count2 and set1 == set2:                       #      return True
+            return True
+
+        return False
