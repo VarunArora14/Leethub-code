@@ -14,15 +14,12 @@ class Solution:
             return []
         
         n_dices = [1 for _ in range(n)]
-        remSum-=n
+        remSum-=n # assign all dices as default 1
+        
         i=0
         while i<n and remSum>0:
-            if remSum>5:
-                n_dices[i]=6
-                remSum-=5
-            else:
-                n_dices[i]+=remSum
-                remSum=0
+            n_dices[i]+=min(5, remSum)
+            remSum-=min(5, remSum)
             i+=1
         
         return n_dices
