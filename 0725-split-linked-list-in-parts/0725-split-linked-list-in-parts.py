@@ -11,8 +11,7 @@ class Solution:
         for i in range(k):
             temp = curr
             for j in range(quotient + (i < remainder) - 1):
-                if curr:
-                    curr = curr.next
+                curr = curr.next
             if curr:
                 x = curr.next
                 curr.next = None
