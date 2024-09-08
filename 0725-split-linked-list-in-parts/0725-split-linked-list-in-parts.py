@@ -5,44 +5,26 @@
 #         self.next = next
 class Solution:
     def splitListToParts(self, head: Optional[ListNode], k: int) -> List[Optional[ListNode]]:
-        node_arr = []
-        curr = head
+        length, current, parts = 0, head, []
         
-        while curr:
-            node_arr.append(curr.val)
-            curr = curr.next
+        while current:
+            length += 1
+            current = current.next
         
-        if len(node_arr) < k:
-            res=[]
-            curr = head
-            while k:
-                if curr:
-                    newNode = ListNode(curr.val)
-                    curr = curr.next
-                    res.append(newNode)
-                else:
-                    res.append(None)
-                k-=1
-        else:
-            res = []
-            rem = len(node_arr)%k # these will be arrays with 1 extra node
-            factor = len(node_arr)//k
-            node_sizes = [factor for _ in range(k)]
-            i=0
-            while rem:
-                node_sizes[i]+=1
-                i+=1
-                rem-=1
-                
-            print(node_sizes)
-            curr = head
-            for i in range(len(node_sizes)):
-                newHead = ListNode(curr.val) if curr else None
-                t = newHead
-                curr = curr.next
-                for j in range(1,node_sizes[i]):
-                    t.next = ListNode(curr.val)
-                    t=t.next
-                    curr = curr.next
-                res.append(newHead)
-        return res
+        base_size, extra = divmod(length, k)
+        current = head
+        
+        for _ in range(k):
+            dummy = ListNode()
+            part_head = dummy
+            
+            for _ in range(base_size + (extra > 0)):
+                dummy.next, current, dummy = current, current.next, current
+            
+            if extra > 0:
+                extra -= 1
+  
+            dummy.next = None
+            parts.append(part_head.next)
+        
+        return parts
